@@ -14,6 +14,6 @@ class Vendor extends Model
 
     public function store()
     {
-    	return $this->belongsTo('App/Store');
+    	return $this->belongsTo(Store::class);
     }
 }

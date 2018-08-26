@@ -30,12 +30,12 @@ class User extends Authenticatable
 
     public function profile()
     {
-        return $this->hasOne('App/Profile');
+        return $this->hasOne(Profile::class);
     }
 
     public function role()
     {
-        return $this->belongsTo('App/Role');
+        return $this->belongsTo(Role::class);
     }
 
     public function store()
@@ -45,6 +45,6 @@ class User extends Authenticatable
 
     public function orders()
     {
-        return $this->hasMany('App/Order');
+        return $this->hasMany(Order::class);
     }
 }

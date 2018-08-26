@@ -44,7 +44,7 @@
             <div class="col-md-6">
                 <img src="{{ url('').'/storage/'.$store->logo }}" id="output_image" width="90px"/>
                 <br>
-                <input type="file" name="image" onchange="preview_image(event)">
+                <input type="file" name="logo" onchange="preview_image(event)">
 
                 @if ($errors->has('logo'))
                     <span class="help-block">

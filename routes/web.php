@@ -17,8 +17,11 @@ Route::get('/', function () {
 
 Route::get('/a', 'HomeController@aaa');
 
-Route::get('/store', 'StoreController@detail')->name('store-detail');
-Route::post('/store', 'StoreController@detail')->name('store-detail');
+Route::get('/store', 'StoreController@detail')->name('store-detail')->middleware('auth');
+Route::post('/store', 'StoreController@update')->name('store-update');
+
+Route::get('/profile', 'ProfileController@detail')->name('profile-detail')->middleware('auth');
+Route::post('/profile', 'ProfileController@update')->name('profile-update');
 
 use Automattic\WooCommerce\HttpClient\HttpClientException;
 

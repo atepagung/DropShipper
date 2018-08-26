@@ -29,7 +29,7 @@ class StoreController extends Controller
     public function detail($id)
     {	
     	//$store = Store::with('user')->get();
-    	$store = Store::with('user')->find(1);
+    	$store = Store::with('user')->find($id);
     	
     	if ($store == NULL) {
     		$output = $this->addMessageFailed('Store tidak ditemukan');

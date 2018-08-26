@@ -20,7 +20,7 @@
                 <div class="navbar-header">
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}" style="color: #ffffff">
+                    <a class="navbar-brand" href="{{ route('store-detail') }}" style="color: #ffffff">
                         {{ config('app.name', 'Laravel') }}
                     </a>
                 </div>
