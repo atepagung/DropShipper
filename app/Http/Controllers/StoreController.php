@@ -7,9 +7,28 @@ use App\Store;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Exception;
+use Automattic\WooCommerce\Client;
+use App\Vendor;
+use App\Order;
 
 class StoreController extends Controller
 {
+	protected $woocommerce;
+
+	public function __construct()
+    {
+        
+        $this->woocommerce = new Client(
+            'https://codeandblue.com/main_dropship', 
+            'ck_e2a5069fd4d20488637f1f4bd48bef5c1986b693', 
+            'cs_e89ef23e2ce5ffbdeed449f3bba1a69ebbbf69ab',
+            [
+                'wp_api' => true,
+                'version' => 'wc/v2',
+            ]
+        );
+    }
+
     public function detail()
     {
     	$store = Store::find(Auth::user()->store->id);
@@ -35,5 +54,61 @@ class StoreController extends Controller
     		return redirect()->route('store-detail');
     	}
     	return redirect()->route('store-detail');
+    }
+
+    public function vendor_list()
+    {
+
+    	$subscribed_product = Vendor::where('store_id', Auth::user()->store->id)->get(['wc_cat_id'])->toArray();
+    	$subscribed_product_id = array();
+    	foreach ($subscribed_product as $value) {
+    		array_push($subscribed_product_id, $value['wc_cat_id']);
+    	}
+
+    	$product_categories = $this->woocommerce->get('products/categories');
+
+    	$subscribed = array();
+
+    	foreach ($product_categories as $key => $value) {
+    		if (in_array($value->id, $subscribed_product_id)) {
+    			array_push($subscribed, $product_categories[$key]);
+    			unset($product_categories[$key]);
+    		}
+    	}
+		
+    	return view('products', ['subscribed' => $subscribed, 'unsubscribed' => $product_categories]);
+    }
+
+    public function vendor_update(Request $request)
+    {
+    	try {
+    		DB::beginTransaction();
+
+    		Vendor::where('store_id', Auth::user()->store->id)->delete();
+
+    		foreach ($request->category as $category) {
+    			$cat = new Vendor;
+    			$cat->store_id = Auth::user()->store->id;
+    			$cat->wc_cat_id = $category;
+    			$cat->save();
+    		}
+
+    		DB::commit();
+    	} catch (Exception $e) {
+    		DB::rollBack();
+
+    		return redirect()->route('products-list');
+    	}
+    	return redirect()->route('products-list');
+    }
+
+    public function order_list()
+    {
+    	$order_list = Order::where('user_id', Auth::user()->id)->get()->toArray();
+
+    	echo "<pre>";
+    	var_dump($order_list);
+    	echo "</pre>";
+    	die();
     }
 }

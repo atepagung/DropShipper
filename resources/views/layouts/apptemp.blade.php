@@ -39,15 +39,15 @@
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
-          <a class="nav-link" href="asdsada">
+          <a class="nav-link" href="{{ route('profile-detail') }}">
             <i class="fa fa-fw fa-archive"></i>
-            <span class="nav-link-text">Pertanyaan ke Ustadz</span>
+            <span class="nav-link-text">Profile</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
-          <a class="nav-link" href="">
+          <a class="nav-link" href="{{ route('products-list') }}">
             <i class="fa fa-fw fa-envelope"></i>
-            <span class="nav-link-text">Pertanyaan ke Dokter</span>
+            <span class="nav-link-text">Products</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">

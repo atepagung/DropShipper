@@ -23,6 +23,11 @@ Route::post('/store', 'StoreController@update')->name('store-update');
 Route::get('/profile', 'ProfileController@detail')->name('profile-detail')->middleware('auth');
 Route::post('/profile', 'ProfileController@update')->name('profile-update');
 
+Route::get('/products', 'StoreController@vendor_list')->name('products-list');
+Route::post('/products', 'StoreController@vendor_update')->name('products-update');
+
+Route::get('/orders', 'StoreController@order_list')->name('order-list');
+
 use Automattic\WooCommerce\HttpClient\HttpClientException;
 
 Route::get('/wcc', function () {
