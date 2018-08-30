@@ -10,6 +10,7 @@ use Exception;
 use Automattic\WooCommerce\Client;
 use App\Vendor;
 use App\Order;
+use App\Woocommerce;
 
 class StoreController extends Controller
 {
@@ -18,15 +19,8 @@ class StoreController extends Controller
 	public function __construct()
     {
         
-        $this->woocommerce = new Client(
-            'https://codeandblue.com/main_dropship', 
-            'ck_e2a5069fd4d20488637f1f4bd48bef5c1986b693', 
-            'cs_e89ef23e2ce5ffbdeed449f3bba1a69ebbbf69ab',
-            [
-                'wp_api' => true,
-                'version' => 'wc/v2',
-            ]
-        );
+        $wc = new Woocommerce;
+        $this->woocommerce = $wc->woocommerce;
     }
 
     public function detail()

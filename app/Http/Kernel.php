@@ -60,5 +60,6 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'wc' => \App\Http\Middleware\ApiWoocommerce::class,
+        'verify_email' => \App\Http\Middleware\VerifyEmail::class,
     ];
 }

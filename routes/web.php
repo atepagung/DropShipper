@@ -15,9 +15,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/a', 'HomeController@aaa');
+Route::get('/forceLogout', function() {
+    Auth::logout();
+    return redirect('/');
+})->name('forceLogout');
 
-Route::get('/store', 'StoreController@detail')->name('store-detail')->middleware('auth');
+Route::get('/a', 'HomeController@aaa');
+Route::get('/send_mail', 'HomeController@send_mail');
+
+Route::get('/verify/{token}', 'HomeController@verify_email');
+
+Route::get('/store', 'StoreController@detail')->name('store-detail')->middleware(['auth', 'verify_email']);
 Route::post('/store', 'StoreController@update')->name('store-update');
 
 Route::get('/profile', 'ProfileController@detail')->name('profile-detail')->middleware('auth');
@@ -28,15 +36,22 @@ Route::post('/products', 'StoreController@vendor_update')->name('products-update
 
 Route::get('/orders', 'StoreController@order_list')->name('order-list');
 
+use Automattic\WooCommerce\Client;
 use Automattic\WooCommerce\HttpClient\HttpClientException;
 
 Route::get('/wcc', function () {
 
 	$woocommerce = new Client(
-	    'https://codeandblue.com/main_dropship/wp-json', 
+	    'https://codeandblue.com/main_dropship', 
 	    'ck_e2a5069fd4d20488637f1f4bd48bef5c1986b693', 
-	    'cs_e89ef23e2ce5ffbdeed449f3bba1a69ebbbf69ab'
+	    'cs_e89ef23e2ce5ffbdeed449f3bba1a69ebbbf69ab',
+        [
+            'wp_api' => true,
+            'version' => 'wc/v2',
+        ]
 	);
+
+    dd($woocommerce->get('orders/91'));
 
     try {
         // Array of response results.
@@ -67,4 +82,4 @@ Route::get('/wcc', function () {
 });
 
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home')->middleware('verify_email');

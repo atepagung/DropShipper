@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Profile;
 use App\Store;
+use App\Verify_mail;
+use App\Mail\VerifyEmail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\DB;
 use Exception;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -106,11 +109,18 @@ class RegisterController extends Controller
             $store->user_id = $user->id;
             $store->save();
 
+            $verify = new Verify_mail;
+            $verify->user_id = $user->id;
+            $verify->token = $user->id.str_random(40).time();
+            $verify->save();
+
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
             return $e->getMessage();
         }
+
+        Mail::to($user->email)->send(new VerifyEmail($verify->token));
 
         return $user;
 
