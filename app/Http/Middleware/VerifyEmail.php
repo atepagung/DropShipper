@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use App\User;
 
 class VerifyEmail
 {
@@ -17,11 +18,14 @@ class VerifyEmail
     public function handle($request, Closure $next)
     {
         $response = $next($request);
-
-        if (Auth::user()->status == 0) {
+        dd($request->all());
+        $user = User::where('username', $request->username)->first();
+        dd($user);
+/*
+        if ($user->status == 0) {
             return redirect()->route('forceLogout');
         }
-
+*/
         return $response;
     }
 }

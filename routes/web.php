@@ -25,7 +25,7 @@ Route::get('/send_mail', 'HomeController@send_mail');
 
 Route::get('/verify/{token}', 'HomeController@verify_email');
 
-Route::get('/store', 'StoreController@detail')->name('store-detail')->middleware(['auth', 'verify_email']);
+Route::get('/store', 'StoreController@detail')->name('store-detail')->middleware('auth');
 Route::post('/store', 'StoreController@update')->name('store-update');
 
 Route::get('/profile', 'ProfileController@detail')->name('profile-detail')->middleware('auth');
@@ -82,4 +82,4 @@ Route::get('/wcc', function () {
 });
 
 
-Route::get('/home', 'HomeController@index')->name('home')->middleware('verify_email');
+Route::get('/home', 'HomeController@index')->name('home');
